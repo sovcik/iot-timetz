@@ -13,7 +13,7 @@ TimeTZ::TimeTZ(){
     _timeStore = NULL;
 }
 
-int TimeTZ::setTimeTZ(const char *isoTime){
+int TimeTZ::setTimeISO(const char *isoTime){
 
     int yy, mm, dd, hr, min, sec;
     char tzSig;
@@ -36,6 +36,8 @@ int TimeTZ::setTimeTZ(const char *isoTime){
     if (getTZOffset(isoTime, &tzSig, &tzHr, &tzMin) ){
 
         setTime(hr, min, sec, dd, mm, yy);
+
+        
         
         long a = (tzSig=='+'?1:-1)*(tzHr*3600+tzMin*60);
         if (a != _tzSeconds) { // if different timezone
@@ -139,7 +141,7 @@ uint8_t TimeTZ::loadTime(){
     uint8_t ret = _timeStore->read(&buf[0],30);
     DEBUG_PRINT("[TimeTZ:load] loaded ret=%d, time=%s\n",ret, &buf[0]);
     if (ret)
-        setTimeTZ(&buf[0]);
+        setTimeISO(&buf[0]);
     return ret;
 }
 

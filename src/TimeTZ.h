@@ -4,9 +4,10 @@
 #include <Arduino.h>
 #include <TimeLib.h>
 #include <TimeStore.h>
+#include <TimeManager.h>
 #include <Looper.h>
 
-class TimeTZ : public Looper {
+class TimeTZ : public Looper, public TimeManager {
     protected:
         char _tzSig;
         uint8_t _tzHr;
@@ -20,9 +21,9 @@ class TimeTZ : public Looper {
 
     public:
         TimeTZ();
-        void setTimeZone(const char *tzOffset);  // offset as e.g. "+01:00" or just "Z"
-        void setTimeZone(char tzSig, uint8_t tzHr, uint8_t tzMin);
-        int setTimeTZ(const char *isoTime);
+        void setTimeZone(const char *tzOffset) override;  // offset as e.g. "+01:00" or just "Z"
+        void setTimeZone(char tzSig, uint8_t tzHr, uint8_t tzMin) override;
+        int setTimeISO(const char *isoTime) override;
         int getTZOffset(const char* isoTime, char *tzSig, uint8_t *tzHr, uint8_t *tzMin);
         void timeToISO(char *buff);
 
