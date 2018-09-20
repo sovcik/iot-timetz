@@ -1,5 +1,5 @@
 #ifndef __TIMEMANAGER_H__
-#define __TIMEMAMAGER_H__
+#define __TIMEMANAGER_H__
 
 class TimeManager {
     public:
