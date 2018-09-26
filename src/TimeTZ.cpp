@@ -3,6 +3,8 @@
 //#define NODEBUG_PRINT
 #include <debug_print.h>
 
+#define TIME_STRING_SIZE        30
+
 TimeTZ::TimeTZ(){
     _updateInterval = 30000; // 15min by default
     _lastUpdate = millis();
@@ -125,11 +127,11 @@ uint8_t TimeTZ::writeTime(){
         DEBUG_PRINT("[TimeTZ:write] no time store set\n");
         return 0;
     }
-    char buf[30];
-    memset(buf,0,30);
-    timeToISO(&buf[0]);
+    char buf[TIME_STRING_SIZE];
+    memset(buf,0,TIME_STRING_SIZE);
+    timeToISO(&buf[0], TIME_STRING_SIZE);
     DEBUG_PRINT("[TimeTZ:write] writing time=%s\n",&buf[0]);
-    return _timeStore->write(&buf[0],30);
+    return _timeStore->write(&buf[0],TIME_STRING_SIZE);
 }
 
 uint8_t TimeTZ::loadTime(){
@@ -137,9 +139,9 @@ uint8_t TimeTZ::loadTime(){
         DEBUG_PRINT("[TimeTZ:load] no time store set\n");
         return 0;
     }
-    char buf[30];
-    memset(buf,0,30);
-    uint8_t ret = _timeStore->read(&buf[0],30);
+    char buf[TIME_STRING_SIZE];
+    memset(buf,0,TIME_STRING_SIZE);
+    uint8_t ret = _timeStore->read(&buf[0],TIME_STRING_SIZE);
     DEBUG_PRINT("[TimeTZ:load] loaded ret=%d, time=%s\n",ret, &buf[0]);
     if (ret)
         setTimeISO(&buf[0]);
