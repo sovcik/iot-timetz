@@ -80,7 +80,7 @@ int TimeTZ::getTZOffset(const char* isoTime, char *tzSig, uint8_t *tzHr, uint8_t
     return 1;
 }
 
-void TimeTZ::timeToISO(char *buff){
+void TimeTZ::timeToISO(char *buff, size_t size){
     // buff has to be at least 26 characters long in order to store time + termination zero
     const char* fmt;
     time_t n = now();
@@ -89,7 +89,8 @@ void TimeTZ::timeToISO(char *buff){
     } else {
         fmt = "%4d-%02d-%02dT%02d:%02d:%02dZ";
     }
-    snprintf(buff, 26, fmt, year(n), month(n), day(n), hour(n), minute(n), second(n), _tzSig, _tzHr, _tzMin);
+    snprintf(buff, size, fmt, year(n), month(n), day(n), hour(n), minute(n), second(n), _tzSig, _tzHr, _tzMin);
+    buff[size-1] = 0;
 
 }
 

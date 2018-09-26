@@ -25,7 +25,7 @@ class TimeTZ : public Looper, public TimeManager {
         void setTimeZone(char tzSig, uint8_t tzHr, uint8_t tzMin) override;
         int setTimeISO(const char *isoTime) override;
         int getTZOffset(const char* isoTime, char *tzSig, uint8_t *tzHr, uint8_t *tzMin);
-        void timeToISO(char *buff);
+        void timeToISO(char *buff, size_t size);
 
         void setTimeStore(TimeStore *ts);
 
