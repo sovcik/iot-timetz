@@ -29,7 +29,7 @@ class TimeTZ : public Looper, public TimeManager {
 
         void setTimeStore(TimeStore *ts);
 
-        uint8_t writeTime();
+        uint8_t writeTime() override;
         uint8_t loadTime(char forceTZ = 0);
 
         void loop() override;
