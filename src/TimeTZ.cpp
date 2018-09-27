@@ -18,7 +18,7 @@ TimeTZ::TimeTZ(){
     _timeStore = NULL;
 }
 
-int TimeTZ::setTimeISO(const char *isoTime){
+int TimeTZ::setTimeISO(const char *isoTime, char forceTZ){
 
     int yy, mm, dd, hr, min, sec;
     char tzSig;
@@ -40,14 +40,17 @@ int TimeTZ::setTimeISO(const char *isoTime){
     // check if provided time is in the same timezone as set timezone, if not adjust time accordingly
     if (getTZOffset(isoTime, &tzSig, &tzHr, &tzMin) ){
 
-        setTime(hr, min, sec, dd, mm, yy);
+        setTime(hr, min, sec, dd, mm, yy);       
+        
+        if (forceTZ){ // time zone will be set to provided time zone
+            setTimeZone(tzSig, tzHr, tzMin);
 
-        
-        
-        long a = (tzSig=='+'?1:-1)*(tzHr*3600+tzMin*60);
-        if (a != _tzSeconds) { // if different timezone
-            a = _tzSeconds - a;
-            adjustTime(a);
+        } else { // time zone will be kept unchanged, time will be adjusted accordingly
+            long a = (tzSig=='+'?1:-1)*(tzHr*3600+tzMin*60);
+            if (a != _tzSeconds) { // if different timezone
+                a = _tzSeconds - a;
+                adjustTime(a);
+            }
         }
         
     } else {
@@ -137,7 +140,7 @@ uint8_t TimeTZ::writeTime(){
     return _timeStore->write(&buf[0],TIME_STRING_SIZE);
 }
 
-uint8_t TimeTZ::loadTime(){
+uint8_t TimeTZ::loadTime(char forceTZ){
     if (!_timeStore) {
         DEBUG_PRINT("[TimeTZ:load] no time store set\n");
         return 0;
@@ -147,7 +150,7 @@ uint8_t TimeTZ::loadTime(){
     uint8_t ret = _timeStore->read(&buf[0],TIME_STRING_SIZE);
     DEBUG_PRINT("[TimeTZ:load] loaded ret=%d, time=%s\n",ret, &buf[0]);
     if (ret)
-        setTimeISO(&buf[0]);
+        setTimeISO(&buf[0], forceTZ);
     return ret;
 }
 
