@@ -2,8 +2,10 @@
 
 #include <TimeLib.h>
 
-// uncomment/comment following line to stop/start debug print 
-//#define NODEBUG_PRINT
+#if DEBUG_TIMETZ != 1
+#define NODEBUG_PRINT
+#endif
+
 #include <debug_print.h>
 
 TimeStoreSPIFFS::~TimeStoreSPIFFS(){

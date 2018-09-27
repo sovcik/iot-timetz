@@ -1,6 +1,9 @@
 #include "TimeTZ.h"
 
-//#define NODEBUG_PRINT
+#if DEBUG_TIMETZ != 1
+#define NODEBUG_PRINT
+#endif
+
 #include <debug_print.h>
 
 #define TIME_STRING_SIZE        30
