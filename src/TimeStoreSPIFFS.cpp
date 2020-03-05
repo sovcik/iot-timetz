@@ -6,6 +6,10 @@
 #define NODEBUG_PRINT
 #endif
 
+#ifdef ESP32
+#include <SPIFFS.h>
+#endif
+
 #include <debug_print.h>
 
 TimeStoreSPIFFS::~TimeStoreSPIFFS(){
